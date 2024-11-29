@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yemek Siparişi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            position: relative; /* Pseudo-element için konumlandırma */
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 500%;
+            background-image: url('Dropped.png'); /* Arka plan görseli */
+            background-size: cover; /* Görseli tamamen kapla */
+            background-repeat: no-repeat; /* Tekrar etme */
+            background-attachment: fixed; /* Kaydırma sırasında sabit kalsın */
+            background-position: center; /* Ortalayarak yerleştir */
+            filter: blur(5px) opacity(50.80); /* Görsele bulanıklık ve şeffaflık uygula */
+            z-index: -1; /* İçeriklerin arkasında kalması için */
+        }
+        
+        
+
+        .header {
+            background-color: #007BFF;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 24px;
+        }
+
+        .menu-buttons {
+            display: flex;
+            justify-content: center;
+            margin: 20px;
+        }
+
+        .menu-buttons button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .menu-buttons button:hover {
+            background-color: #45a049;
+        }
+
+        .menu {
+            display: none;
+            margin: 20px auto;
+            max-width: 1000px;
+        }
+
+        .menu-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 30%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .menu-item img {
+            width: 100px;
+            height: 100px;
+            border-radius: 5px;
+        }
+
+        .menu-item .info {
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .menu-item .controls {
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-item .controls button {
+            background-color: #ecac70;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+
+        .menu-item .controls button:hover {
+            background-color: #f7bc6f;
+        }
+
+        .menu-item .controls input {
+            width: 40px;
+            text-align: center;
+        }
+
+        .cart {
+            display: none;
+            margin: 20px auto;
+            max-width: 800px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .cart-total {
+            text-align: right;
+            font-size: 18px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .cart-buttons {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .cart-buttons button {
+            background-color: #FF5733;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .cart-buttons button:hover {
+            background-color: #c43d24;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">Yemek Siparişi</div>
+
+    <div class="menu-buttons">
+        <button onclick="showMenu(1)">Menü 1</button>
+        <button onclick="showMenu(2)">Menü 2</button>
+        <button onclick="showMenu(3)">Menü 3</button>
+    </div>
+
+    <div id="menu1" class="menu">
+        <div class="menu-row">
+            <div class="menu-item" style="background-color: #fce0b5; border: 1px solid #ccc; border-radius: 5px; padding: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <img src="1-1.png" alt="Mercimek Çorbası">
+                <div class="info">
+                    <h4>Mercimek Çorbası</h4>
+                    <p>Fiyat: 80 TL</p>
+                </div>
+                <div class="controls">
+                    <button onclick="decrement(this)">-</button>
+                    <input type="number" value="1" min="1">
+                    <button onclick="increment(this)">+</button>
+                    <button onclick="addToCart('Mercimek Çorbası', 80, this)">Sepete Ekle</button>
+                </div>
+            </div>            
+            <div class="menu-item" style="background-color: #fce0b5; border: 1px solid #ccc; border-radius: 5px; padding: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <img src="1-2.png" alt="Etli Yaprak Sarma">
+                <div class="info">
+                    <h4>Etli Yaprak Sarma</h4>
+                    <p>Fiyat: 300 TL</p>
+                </div>
+                <div class="controls">
+                    <button onclick="decrement(this)">-</button>
+                    <input type="number" value="1" min="1">
+                    <button onclick="increment(this)">+</button>
+                    <button onclick="addToCart('Etli Yaprak Sarma', 300, this)">Sepete Ekle</button>
+                </div>
+            </div>
+             <div class="menu-item" style="background-color: #fce0b5; border: 1px solid #ccc; border-radius: 5px; padding: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <img src="1-3.png " alt="Fırında Sütlaç">
+                <div class="info">
+                    <h4>Etli Yaprak Sarma</h4>
+                    <p>Fiyat: 110 TL</p>
+                </div>
+                <div class="controls">
+                    <button onclick="decrement(this)">-</button>
+                    <input type="number" value="1" min="1">
+                    <button onclick="increment(this)">+</button>
+                    <button onclick="addToCart('Fırında Sütlaç', 110, this)">Sepete Ekle</button>
+                </div>
+            </div>
+        </div>v
+    </div>
+
+    <div id="menu2" class="menu">
+        <div class="menu-row">
+            <div class="menu-item" style="background-color: #fce0b5; border: 1px solid #ccc; border-radius: 5px; padding: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <img src="2-1.png" alt="Caprese Salatası">
+                <div class="info">
+                    <h4>Caprese Salatası</h4>
+                    <p>Fiyat: 150 TL</p>
+                </div>
+                <div class="controls">
+                    <button onclick="decrement(this)">-</button>
+                    <input type="number" value="1" min="1">
+                    <button onclick="increment(this)">+</button>
+                    <button onclick="addToCart('Caprese Salatası', 150, this)">Sepete Ekle</button>
+                </div>
+            </div>
+            <div class="menu-item" style="background-color: #fce0b5; border: 1px solid #ccc; border-radius: 5px; padding: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <img src="2-2.png" alt="Spaghetti Carbonara">
+                <div class="info">
+                    <h4>Spaghetti Carbonara</h4>
+                    <p>Fiyat: 220 TL</p>
+                </div>
+                <div class="controls">
+                    <button onclick="decrement(this)">-</button>
+                    <input type="number" value="1" min="1">
+                    <button onclick="increment(this)">+</button>
+                    <button onclick="addToCart('Spaghetti Carbonara', 220, this)">Sepete Ekle</button>
+                </div>
+            </div>
+            <div class="menu-item" style="background-color: #fce0b5; border: 1px solid #ccc; border-radius: 5px; padding: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <img src="2-3.png " alt="Tiramisu">
+                <div class="info">
+                    <h4>Tiramisu</h4>
+                    <p>Fiyat: 130 TL</p>
+                </div>
+                <div class="controls">
+                    <button onclick="decrement(this)">-</button>
+                    <input type="number" value="1" min="1">
+                    <button onclick="increment(this)">+</button>
+                    <button onclick="addToCart('Tiramisu', 130, this)">Sepete Ekle</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="menu3" class="menu">
+        <div class="menu-row">
+            <div class="menu-item" style="background-color: #fce0b5; border: 1px solid #ccc; border-radius: 5px; padding: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <img src="https://via.placeholder.com/100" alt="Kinoalı Yeşil Salata">
+                <div class="info">
+                    <h4>Yemek 3-1</h4>
+                    <p>Fiyat: 60 TL</p>
+                </div>
+                <div class="controls">
+                    <button onclick="decrement(this)">-</button>
+                    <input type="number" value="1" min="1">
+                    <button onclick="increment(this)">+</button>
+                    <button onclick="addToCart('Yemek 3-1', 60, this)">Sepete Ekle</button>
+                </div>
+            </div>
+            <div class="menu-item" style="background-color: #fce0b5; border: 1px solid #ccc; border-radius: 5px; padding: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <img src="https://via.placeholder.com/100" alt="Izgara Somon ve Sebzeler">
+                <div class="info">
+                    <h4>Yemek 3-2</h4>
+                    <p>Fiyat: 70 TL</p>
+                </div>
+                <div class="controls">
+                    <button onclick="decrement(this)">-</button>
+                    <input type="number" value="1" min="1">
+                    <button onclick="increment(this)">+</button>
+                    <button onclick="addToCart('Yemek 3-2', 70, this)">Sepete Ekle</button>
+                </div>
+            </div>
+            <div class="menu-item" style="background-color: #fce0b5; border: 1px solid #ccc; border-radius: 5px; padding: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <img src="https://via.placeholder.com/100" alt="Yoğurtlu Meyve Kupası">
+                <div class="info">
+                    <h4>Yemek 3-3</h4>
+                    <p>Fiyat: 80 TL</p>
+                </div>
+                <div class="controls">
+                    <button onclick="decrement(this)">-</button>
+                    <input type="number" value="1" min="1">
+                    <button onclick="increment(this)">+</button>
+                    <button onclick="addToCart('Yemek 3-3', 80, this)">Sepete Ekle</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="cart" class="cart">
+        <h2>Sepetiniz</h2>
+        <div id="cart-items"></div>
+        <div class="cart-total">Toplam: 0 TL</div>
+        <div class="cart-buttons">
+            <button onclick="checkout()">Satın Al</button>
+        </div>
+    </div>
+
+    <script>
+        const cart = {};
+
+        function showMenu(menuId) {
+            document.querySelectorAll('.menu').forEach(menu => menu.style.display = 'none');
+            document.getElementById('menu' + menuId).style.display = 'block';
+            document.getElementById('cart').style.display = 'none';
+        }
+
+        function increment(button) {
+            const input = button.previousElementSibling;
+            input.value = parseInt(input.value) + 1;
+        }
+
+        function decrement(button) {
+            const input = button.nextElementSibling;
+            if (parseInt(input.value) > 1) {
+                input.value = parseInt(input.value) - 1;
+            }
+        }
+
+        function addToCart(itemName, price, button) {
+            const quantity = parseInt(button.previousElementSibling.previousElementSibling.value);
+
+            if (cart[itemName]) {
+                cart[itemName].quantity += quantity;
+            } else {
+                cart[itemName] = { price: price, quantity: quantity };
+            }
+
+            alert(`${quantity} adet ${itemName} sepete eklendi!`);
+        }
+
+        function goToCart() {
+            const cartDiv = document.getElementById('cart-items');
+            cartDiv.innerHTML = '';
+            let total = 0;
+
+            for (const [itemName, itemDetails] of Object.entries(cart)) {
+                const itemTotal = itemDetails.price * itemDetails.quantity;
+                total += itemTotal;
+
+                cartDiv.innerHTML += `
+                    <div class="cart-item">
+                        <span>${itemName} (${itemDetails.quantity} adet)</span>
+                        <span>${itemTotal} TL</span>
+                    </div>
+                `;
+            }
+
+            document.querySelector('.cart-total').innerText = `Toplam: ${total} TL`;
+            document.getElementById('cart').style.display = 'block';
+            document.querySelectorAll('.menu').forEach(menu => menu.style.display = 'none');
+        }
+
+        function checkout() {
+            alert('Satın alma işleminiz başarıyla tamamlandı!');
+        }
+    </script>
+
+    <div class="cart-button">
+        <button onclick="goToCart()" style="position: relative; left: 380px; font-size: 16px; 
+        padding: 10px 20px; background-color: #007BFF; color: white; 
+        border: none; border-radius: 5px; cursor: pointer; 
+        transition: all 0.3s ease;">Sepete Git</button>
+    </div>
+
+</body>
+</html>
